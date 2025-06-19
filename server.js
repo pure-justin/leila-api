@@ -190,6 +190,16 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: 'Leila API Documentation'
 }));
 
+// Serve Postman collection
+app.get('/postman.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'postman-collection.json'));
+});
+
+// Postman documentation link
+app.get('/postman', (req, res) => {
+  res.redirect('https://documenter.getpostman.com/view/postman/collection/' + encodeURIComponent(process.env.API_URL || 'https://leila-api.onrender.com') + '/postman.json');
+});
+
 // API Key Validation Middleware
 const validateApiKey = async (req, res, next) => {
   const apiKey = req.headers['x-api-key'];
@@ -248,6 +258,7 @@ app.get('/', (req, res) => {
     message: 'Leila API Gateway', 
     version: '1.0.0',
     documentation: '/api-docs',
+    postmanCollection: '/postman.json',
     monitoring: '/api/stats',
     uptime: `${uptime} seconds`,
     endpoints: {
@@ -256,6 +267,7 @@ app.get('/', (req, res) => {
       auth: '/api/auth/login',
       jobs: '/api/jobs/available',
       documentation: '/api-docs',
+      postman: '/postman.json',
       stats: '/api/stats'
     }
   });
