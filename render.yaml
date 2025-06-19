@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: leila-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
